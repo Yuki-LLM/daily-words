@@ -1,0 +1,18 @@
+{
+  "name": "Daily Words 生活生词本",
+  "short_name": "Daily Words",
+  "description": "随手查词、自动保存、每天复习的生活生词本。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f4ed",
+  "theme_color": "#163832",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
