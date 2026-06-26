@@ -28,6 +28,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install dependencies
         run: npm install
 
@@ -39,6 +42,13 @@ jobs:
 
       - name: Sync Android project
         run: npx cap sync android
+
+      - name: Prepare Android build tools
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          chmod +x ./gradlew
+        working-directory: android
 
       - name: Build debug APK
         run: ./gradlew assembleDebug
