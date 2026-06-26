@@ -51,19 +51,31 @@ jobs:
         working-directory: android
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug --no-daemon --stacktrace --info 2>&1 | tee ../gradle-build.log
         working-directory: android
 
+      - name: Upload Gradle log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gradle-Build-Log
+          path: gradle-build.log
+
       - name: Rename APK
+        if: success()
         run: cp android/app/build/outputs/apk/debug/app-debug.apk Daily-Words.apk
 
       - name: Upload APK artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Daily-Words-APK
           path: Daily-Words.apk
 
       - name: Create GitHub Release
+        if: success()
         env:
           GH_TOKEN: ${{ github.token }}
           TAG_NAME: apk-${{ github.run_number }}
