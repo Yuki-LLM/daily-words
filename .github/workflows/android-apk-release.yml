@@ -63,6 +63,19 @@ jobs:
           name: Gradle-Build-Log
           path: gradle-build.log
 
+      - name: Print Gradle failure summary
+        if: failure()
+        run: |
+          {
+            echo "### Gradle build failed"
+            echo
+            echo '```text'
+            tail -n 180 gradle-build.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          summary="$(tail -n 80 gradle-build.log | sed ':a;N;$!ba;s/%/%25/g;s/\r/%0D/g;s/\n/%0A/g')"
+          echo "::error title=Gradle build failed::$summary"
+
       - name: Rename APK
         if: success()
         run: cp android/app/build/outputs/apk/debug/app-debug.apk Daily-Words.apk
